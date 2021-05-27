@@ -19,7 +19,7 @@ public class Rotate : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             transform.Rotate(0f, -1 * mouseX * speed_rot, 0f, Space.World);
-            transform.Rotate(-1 * mouseY * speed_rot, 0f, 0f);
+            transform.Rotate(mouseY * speed_rot, 0f, 0f);
         }
     }
 }
