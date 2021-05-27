@@ -19,15 +19,9 @@ public class Zoom : MonoBehaviour
         if (transform.position.z >= m_zoomMax && t_zoomDirection < 0) //최대 범위 넘으면 확대 그만
             return;
 
-        //scale += t_zoomDirection * m_zoomSpeed;
-
-        //scale_x = transform.localScale.x;
-        //scale_y = transform.localScale.y;
-        //scale_z = transform.localScale.z;
-
-        transform.localScale = new Vector3(transform.localScale.x + t_zoomDirection * 0.05f,transform.localScale.y + t_zoomDirection * 0.05f,transform.localScale.z + t_zoomDirection * 0.05f);
-
-        //transform.localScale = new Vector3((float)0.1* scale + scale_x, (float)0.1*scale + scale_y, (float)0.1*scale + scale_y);
+        
+        transform.localScale = new Vector3(transform.localScale.x + t_zoomDirection * 0.2f,transform.localScale.y + t_zoomDirection * 0.2f,transform.localScale.z + t_zoomDirection * 0.2f);
+        //숫자 커질수록 zoom in/out 속도가 빨라짐
     }
     
     void Update()
