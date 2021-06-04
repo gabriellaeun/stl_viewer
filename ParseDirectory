@@ -1,0 +1,33 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.Xml;
+using System.Text;
+using System;
+using System.IO;
+
+public class ParseDirectory : MonoBehaviour
+{
+    void Start()
+    {
+        Load();
+    }
+
+    void Load()
+    {
+        string FileName = "2018-06-08_162694979.constructionInfo";
+        string result = Path.ChangeExtension(FileName, ".xml"); //.constructionInfo 파일의 확장자를 .xml로 변환
+        string NAME = Path.GetFileNameWithoutExtension(result);//확장자를 뺀 파일의 이름
+        TextAsset textAsset = (TextAsset)Resources.Load(NAME);
+        Debug.Log(textAsset);
+        XmlDocument xmlDoc = new XmlDocument();
+        xmlDoc.Load(textAsset.text);
+
+        XmlNodeList nodes = xmlDoc.SelectNodes("ConstructionInfo/Teeth/Tooth");
+
+        foreach (XmlNode node in nodes)
+        {
+            Debug.Log("Number :: " + node.SelectSingleNode("Number").InnerText);
+        }
+    }
+}
