@@ -20,13 +20,27 @@ public class ParseDirectory : MonoBehaviour
         */
 
         /*
+        //파일 찾기 코드 추가해야할 듯
+
+
         string FileName = "C:\\Users\\82105\\stl_viewer\\Assets\\Resources\\2018-06-08_162694979.constructionInfo";
-        string result = Path.ChangeExtension(FileName, ".xml"); //.constructionInfo 파일의 확장자를 .xml로 변환
-        File.Move(FileName, result);
-        Debug.Log(result);
-        string NAME = Path.GetFileNameWithoutExtension(result);//확장자를 뺀 파일의 이름
-        TextAsset textAsset = (TextAsset)Resources.Load(NAME);
-        Debug.Log(textAsset);
+
+        if(strcmp(Path.GetExtension(FileName), ".constructionInfo") == 0){
+            string result = Path.ChangeExtension(FileName, ".xml"); //.constructionInfo 파일의 확장자를 .xml로 변환
+            File.Move(FileName, result);
+            Debug.Log(result);
+            string NAME = Path.GetFileNameWithoutExtension(result);//확장자를 뺀 파일의 이름
+            TextAsset textAsset = (TextAsset)Resources.Load(NAME);
+            Debug.Log(textAsset);   
+        }
+        else if(strcmp(Path.GetExtension(FileName), ".xml") == 0){
+            string NAME = Path.GetFileNameWithoutExtension(FileName);
+        }
+        else{
+            Debug.Log("path extension error");
+        }
+
+        XmlReader reader = XmlReader.Create(FileName);
         */
         string xmlPath = "C:\\Users\\82105\\stl_viewer\\Assets\\Resources\\2018-06-08_162694979.xml";
         string NAME = Path.GetFileNameWithoutExtension(xmlPath);
