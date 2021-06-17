@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Xml;
 using System.Text;
 using System;
@@ -8,6 +9,9 @@ using System.IO;
 
 public class ParseDirectory : MonoBehaviour
 {
+    public Text m_text;
+    string number, type, libname, libfile, imptype;
+
     void Start()
     {
         Load();
@@ -44,7 +48,7 @@ public class ParseDirectory : MonoBehaviour
         */
         string xmlPath = "C:\\Users\\82105\\stl_viewer\\Assets\\Resources\\2018-06-08_162694979.xml";
         string NAME = Path.GetFileNameWithoutExtension(xmlPath);
-
+        
         XmlReader reader = XmlReader.Create(xmlPath);
 
         while (reader.Read())
@@ -54,21 +58,32 @@ public class ParseDirectory : MonoBehaviour
                 switch (reader.Name.ToString())
                 {
                     case "Number":
+                        number = reader.ReadString();
                         Debug.Log("Number : " + reader.ReadString());
                         break;
                     case "ReconstructionType":
+                        type = reader.ReadString();
                         Debug.Log("Type : " + reader.ReadString());
                         break;
                     case "ToothLibraryName":
+                        libname = reader.ReadString();
                         Debug.Log("Tooth Library Name : " + reader.ReadString());
                         break;
                     case "ToothModelFilename":
+                        libfile = reader.ReadString();
                         Debug.Log("Tooth Library File : " + reader.ReadString());
                         break;
                     case "ImplantType":
+                        imptype = reader.ReadString();
                         Debug.Log("Implant Type : " + reader.ReadString());
                         break;
                 }
+                string result = "Number : " + number + System.Environment.NewLine
+                                + "Type : " + type + System.Environment.NewLine
+                                + "Tooth Library Name : " + libname + System.Environment.NewLine
+                                + "Tooth Library File : " + libfile + System.Environment.NewLine
+                                + "Implant Type : " + imptype + System.Environment.NewLine;
+                m_text.text = result;
             }
         }
 
