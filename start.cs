@@ -10,7 +10,7 @@ public class start : MonoBehaviour
 
     public void PushButton()
     {
-        lower.gameObject.transform.position = new Vector3(-0.002f, -6.2f, 80f);
+        lower.gameObject.transform.position = new Vector3(0f, 0f, 80f);
         lower.gameObject.transform.rotation = Quaternion.Euler(new Vector3(-90f, -10f, 0f));
         lower.gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
 
@@ -21,7 +21,7 @@ public class start : MonoBehaviour
         
         if (abut.gameObject.name == "2")//지대치가 하악일 경우
         {
-            abut.gameObject.transform.position = new Vector3(-0.002f, -6.2f, 80f);
+            abut.gameObject.transform.position = new Vector3(0f, 0f, 80f);
             abut.gameObject.transform.rotation = Quaternion.Euler(new Vector3(-90f, -10f, 0f));
             abut.gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
         }
