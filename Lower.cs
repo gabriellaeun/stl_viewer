@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Lower : MonoBehaviour
 {
-    // 하악은 상악의 child로 들어가있기 때문에 상악의 위치로부터 바뀌는 위치 표시
+    // 하악과 상악을 따로 제어
     void Start()
     {
-        transform.localPosition = new Vector3(-0.002f, -6.2f, 80f);
+        transform.localPosition = new Vector3(0f, 0f, 80f); //상악, 하악 교합면 맞추기
         transform.rotation = Quaternion.Euler(new Vector3(-90f, -10f, 0f));
         transform.localScale = new Vector3(1f, 1f, 1f);
     }
