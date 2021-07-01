@@ -11,8 +11,7 @@ using System.Text;
 public class FileDialog : MonoBehaviour
 {
     public Text m_text;
-    string type, libname, libfile, imptype, FilePath;
-    string number;
+    string type, libname, libfile, imptype, FilePath, number;
     string upper, lower;
     string c_lower = null;
     string c_upper = null;
@@ -68,13 +67,45 @@ public class FileDialog : MonoBehaviour
         }
         */
 
-        FilePath = Path.Combine(path, DirName + ".xml");
-
+        FilePath = path + "/" + DirName + ".xml";
+        Debug.Log("xml 파일 경로 : " + FilePath);
         string NAME = Path.GetFileNameWithoutExtension(FilePath);
         TextAsset textAsset = (TextAsset)Resources.Load(DirName + "/" + NAME);
         Debug.Log(textAsset);
-                     
-        XmlReader reader = XmlReader.Create(@FilePath);
+
+        string str = textAsset.text;
+
+        XmlDocument xmldoc = new XmlDocument();
+        xmldoc.LoadXml(str);
+
+
+        XmlNodeList nodes = xmldoc.SelectNodes("ConstuctionInfo/Teeth/Tooth");
+        //Debug.Log(nodes);
+
+        foreach(XmlNode node in nodes)
+        {
+            number = node.SelectSingleNode("Number").InnerText;
+            type = node.SelectSingleNode("ReconstructionType").InnerText;
+            libname = node.SelectSingleNode("ToothLibraryName").InnerText;
+            libfile = node.SelectSingleNode("ToothModelFilename").InnerText;
+            imptype = node.SelectSingleNode("ImplantType").InnerText;
+        }
+
+        Debug.Log("Number :: " + number);
+        Debug.Log("ReconstructionType :: " + type);
+        Debug.Log("Tooth Library Name :: " + libname);
+        Debug.Log("ToothModel Filename :: " + libfile);
+        Debug.Log("Implant Type :: " + imptype);
+
+        string result = "Number : " + number + System.Environment.NewLine
+                + "Type : " + type + System.Environment.NewLine
+                + "Tooth Library Name : " + libname + System.Environment.NewLine
+                + "Tooth Library File : " + libfile + System.Environment.NewLine
+                + "Implant Type : " + imptype + System.Environment.NewLine;
+        m_text.text = result;
+
+        /*
+        XmlReader reader = XmlReader.Create(FilePath);
 
         
         while (reader.Read())
@@ -83,7 +114,7 @@ public class FileDialog : MonoBehaviour
             {
                 switch (reader.Name.ToString())
                 {
-                    case "Number": //다른 부분은 제대로 들어가는데 Number는 계속 0으로 들어감
+                    case "Number": 
                         number = reader.ReadString();
                         Debug.Log("Number : " + reader.ReadString());
                         break;
@@ -110,9 +141,12 @@ public class FileDialog : MonoBehaviour
                                 + "Tooth Library File : " + libfile + System.Environment.NewLine
                                 + "Implant Type : " + imptype + System.Environment.NewLine;
                 m_text.text = result;
+
+                reader.Close();
             }
         }
-        
+        */
+
 
     }
 
@@ -126,16 +160,47 @@ public class FileDialog : MonoBehaviour
         string DirName = Path.GetFileName(@select_path);//폴더 이름
         Debug.Log("폴더 이름 : " + DirName);
 
+        DirectoryInfo di = new DirectoryInfo(@select_path);
+        foreach (FileInfo file in di.GetFiles())
+        {
+            ConFile = file.Name;
+            if(Path.GetExtension(ConFile) == ".constructionInfo")
+            {
+                string con_path = Path.Combine(select_path, ConFile);
+                string result = Path.ChangeExtension(con_path, ".xml");
+                File.Move(con_path, result);
+                Debug.Log(con_path + ">>" + result);
+            }
+        }
+
         //ConFile = Directory.GetFiles(select_path, "*.constructionInfo");
 
-        string[] con_files = Directory.GetFiles(@select_path, "*.constructionInfo");
-        foreach(string con in con_files)
+        /*
+        if (String.Contains(Directory.GetFiles(@select_path, "*.constructionInfo")))
+        {
+            string[] con_files = Directory.GetFiles(@select_path, "*.constructionInfo");
+
+            foreach (string con in con_files)
+            {
+                ConFile = con;
+                Debug.Log("con file : " + ConFile);
+            }
+
+            string con_path = Path.Combine(select_path, ConFile);
+            string result = Path.ChangeExtension(con_path, ".xml");
+            File.Move(con_path, result);
+            Debug.Log(con_path + ">>" + result);
+        }
+        */
+
+        //string[] con_files = Directory.GetFiles(@select_path, "*.constructionInfo");
+        /*foreach(string con in con_files)
         {
             ConFile = con;
             Debug.Log("con file : " + ConFile);
-        }
+        }*/
 
-
+        /*
         if (Path.GetExtension(ConFile) == ".constructionInfo") 
         {
             //ConFile = fname;
@@ -143,15 +208,15 @@ public class FileDialog : MonoBehaviour
             string result = Path.ChangeExtension(con_path, ".xml");
             File.Move(con_path, result);
             Debug.Log(con_path + ">>" + result);
-            /*
+            
             string result = Path.ChangeExtension(fname, ".xml");
             Debug.Log("변환 후 파일 : " + result);
             XmlFile = result;
-            */
-        }
-        
+            
+        }*/
+      
 
-        DirectoryInfo di = new DirectoryInfo(@select_path);
+        //DirectoryInfo di = new DirectoryInfo(@select_path);
 
         foreach (FileInfo file in di.GetFiles())
         {
@@ -252,7 +317,4 @@ public class FileDialog : MonoBehaviour
         Load(target_path, DirName);
 
     }
-
-    
-
 }
