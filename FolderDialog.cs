@@ -11,71 +11,79 @@ using System.Text;
 public class FileDialog : MonoBehaviour
 {
     public Text m_text;
-    //public string xmlPath;
-    //public string FilePath;
-    string number, type, libname, libfile, imptype, FilePath;
+    string type, libname, libfile, imptype, FilePath;
+    string number;
     string upper, lower;
     string c_lower = null;
     string c_upper = null;
+    string XmlFile = null;
     string ConFile = null;
-    string XmlFile = null; 
+    string crown = null;
 
     void Load(string path, string DirName)
     {
         /*
         -----constructionInfo 확장자 파일을 xml로 바꿔주기---------
+        (수정) 확장자를 .xml로 바꿔서 옴
         */
 
-        //파일 찾기 코드 추가해야할 듯
+        /*
         string[] files = Directory.GetFiles(path);
         foreach (string s in files)
         {
             string fileName = Path.GetFileName(s);
+
+            /*
             if(Path.GetExtension(fileName) == ".constructionInfo")
             {
+                //XmlFile = Path.ChangeExtension(fileName, ".xml");
+                //Debug.Log("변환 후 파일 : " + fileName);
                 FilePath = Path.Combine(path, fileName);
+                string NAME = Path.GetFileNameWithoutExtension(FilePath);
+                TextAsset textAsset = (TextAsset)Resources.Load(NAME);
+                Debug.Log("xml 파일 : " + textAsset);
             }
-            else if(Path.GetExtension(fileName) == ".xml")
+            else 
+            */
+
+            /*
+            if(Path.GetExtension(fileName) == ".xml")
             {
-                FilePath = Path.Combine(path, fileName);
+                Debug.Log("파싱할 파일 : " + fileName);
+                //FilePath = Path.Combine(path, fileName);
+                string NAME = Path.GetFileNameWithoutExtension(fileName);
+                TextAsset textAsset = (TextAsset)Resources.Load(DirName + "/" + NAME);
+                Debug.Log("text Asset : " + textAsset);
             }
-        }
-        //string FilePath = "C:\\Users\\82105\\stl_viewer\\Assets\\Resources\\2018-06-08_162694979.xml";
+        }*/
 
-        if (Path.GetExtension(@FilePath) == ".constructionInfo")
+        /*
+        if (Path.GetExtension(path) == ".xml")
         {
-            string result = Path.ChangeExtension(@FilePath, ".xml"); //.constructionInfo 파일의 확장자를 .xml로 변환
-            //File.Move(@FilePath, result);
-            //Debug.Log(result);
-            string NAME = Path.GetFileNameWithoutExtension(result);//확장자를 뺀 파일의 이름
-            TextAsset textAsset = (TextAsset)Resources.Load(NAME);
-            Debug.Log(textAsset);
+            Debug.Log("파싱할 파일 : " + fileName);
+            //FilePath = Path.Combine(path, fileName);
+            string NAME = Path.GetFileNameWithoutExtension(fileName);
+            TextAsset textAsset = (TextAsset)Resources.Load(DirName + "/" + NAME);
+            Debug.Log("text Asset : " + textAsset);
         }
-        else if (Path.GetExtension(@FilePath) == ".xml")
-        {
-            string NAME = Path.GetFileNameWithoutExtension(FilePath);
-            TextAsset textAsset = (TextAsset)Resources.Load(NAME);
-            Debug.Log(textAsset);
-        }
-        else
-        {
-            Debug.Log("path extension error");
-        }
+        */
 
+        FilePath = Path.Combine(path, DirName + ".xml");
+
+        string NAME = Path.GetFileNameWithoutExtension(FilePath);
+        TextAsset textAsset = (TextAsset)Resources.Load(DirName + "/" + NAME);
+        Debug.Log(textAsset);
+                     
         XmlReader reader = XmlReader.Create(@FilePath);
 
-        //xmlPath = "C:\\Users\\82105\\stl_viewer\\Assets\\Resources\\2018-06-08_162694979.xml";
-        //string NAME = Path.GetFileNameWithoutExtension(xmlPath);
-
-        //XmlReader reader = XmlReader.Create(xmlPath);
-
+        
         while (reader.Read())
         {
             if (reader.IsStartElement())
             {
                 switch (reader.Name.ToString())
                 {
-                    case "Number":
+                    case "Number": //다른 부분은 제대로 들어가는데 Number는 계속 0으로 들어감
                         number = reader.ReadString();
                         Debug.Log("Number : " + reader.ReadString());
                         break;
@@ -104,6 +112,7 @@ public class FileDialog : MonoBehaviour
                 m_text.text = result;
             }
         }
+        
 
     }
 
@@ -117,6 +126,30 @@ public class FileDialog : MonoBehaviour
         string DirName = Path.GetFileName(@select_path);//폴더 이름
         Debug.Log("폴더 이름 : " + DirName);
 
+        //ConFile = Directory.GetFiles(select_path, "*.constructionInfo");
+
+        string[] con_files = Directory.GetFiles(@select_path, "*.constructionInfo");
+        foreach(string con in con_files)
+        {
+            ConFile = con;
+            Debug.Log("con file : " + ConFile);
+        }
+
+
+        if (Path.GetExtension(ConFile) == ".constructionInfo") 
+        {
+            //ConFile = fname;
+            string con_path = Path.Combine(select_path , ConFile);
+            string result = Path.ChangeExtension(con_path, ".xml");
+            File.Move(con_path, result);
+            Debug.Log(con_path + ">>" + result);
+            /*
+            string result = Path.ChangeExtension(fname, ".xml");
+            Debug.Log("변환 후 파일 : " + result);
+            XmlFile = result;
+            */
+        }
+        
 
         DirectoryInfo di = new DirectoryInfo(@select_path);
 
@@ -141,13 +174,14 @@ public class FileDialog : MonoBehaviour
             {
                 c_upper = fname;
             }
-            else if(Path.GetExtension(fname) == ".constructionInfo")
+            else if (Path.GetExtension(fname) == ".stl")
             {
-                ConFile = fname;
+                crown = fname;
             }
             else if (Path.GetExtension(fname) == ".xml")
             {
                 XmlFile = fname;
+                Debug.Log("xml : " + XmlFile);
             }
 
         }
@@ -165,35 +199,13 @@ public class FileDialog : MonoBehaviour
         string proj_path = UnityEngine.Application.dataPath; //1. 프로젝트 Assets 경로
         Debug.Log(proj_path);
 
-        string target_path = @Path.Combine(proj_path, "Resources", DirName);//디렉토리 이름이 File이 아니고 사실 복사하는 디렉토리의 이름과 같아야 함
+        string target_path = proj_path + "/Resources/" + DirName;
 
         Directory.CreateDirectory(target_path);
 
         //2.select_path 폴더를 현 프로젝트의 Asset으로 옮기는 코드
         
-        /*
-
-        if (Directory.Exists(@select_path))
-        {
-            string[] files = Directory.GetFiles(@select_path);
-            string destFile = Path.Combine(target_path, fileName);
-            foreach (string s in files)
-            {
-                string fileName = Path.GetFileName(s);
-                if (s == upper || s == lower || s == c_upper || s == c_lower || s = ConFile || s == XmlFile)
-                {
-                    File.Copy(s, destFile, true);
-                }
-            }
-        }
-        else
-        {
-            Debug.Log("Source path does not exist");
-        }
-
-        */
-
-        
+                
         string[] files = Directory.GetFiles(@select_path);
         
         foreach (string s in files)
@@ -218,17 +230,25 @@ public class FileDialog : MonoBehaviour
             {
                 File.Copy(sourceFile, destFile, true);
             }
-            else if (fileName == ConFile)
+            else if (fileName == crown)
             {
                 File.Copy(sourceFile, destFile, true);
             }
-            else if (fileName == XmlFile)
+            /*else if(fileName == ConFile)
+            {
+                XmlFile = Path.ChangeExtension(s, ".xml");
+                File.Move(s, XmlFile);
+                destFile = Path.Combine(target_path, fileName);
+                sourceFile = Path.Combine(select_path, fileName);
+                File.Copy(sourceFile, destFile, true);
+            }*/
+            else if(fileName == XmlFile)
             {
                 File.Copy(sourceFile, destFile, true);
             }
 
         }
-        
+        Debug.Log("target : " + target_path);
         Load(target_path, DirName);
 
     }
