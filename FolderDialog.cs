@@ -11,6 +11,7 @@ using System.Text;
 public class FileDialog : MonoBehaviour
 {
     public Text m_text;
+    public string DirName;
     string type, libname, libfile, imptype, FilePath, number;
     string upper, lower;
     string c_lower = null;
@@ -146,8 +147,10 @@ public class FileDialog : MonoBehaviour
             }
         }
         */
-
-
+        GameObject Upperjaw;
+        Upperjaw = Resources.Load("1") as GameObject;
+        //Instantiate(Upperjaw, Upperjaw.position, Quaternion.identity);
+        Instantiate(Upperjaw, new Vector3(0.05f, -0.2f, 80f), Quaternion.identity);
     }
 
 
@@ -157,7 +160,7 @@ public class FileDialog : MonoBehaviour
         dialog.ShowDialog();
         string select_path = dialog.SelectedPath;
         Debug.Log("선택된 폴더 : " + select_path);
-        string DirName = Path.GetFileName(@select_path);//폴더 이름
+        DirName = Path.GetFileName(@select_path);//폴더 이름
         Debug.Log("폴더 이름 : " + DirName);
 
         DirectoryInfo di = new DirectoryInfo(@select_path);
