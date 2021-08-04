@@ -147,8 +147,9 @@ public class FileDialog : MonoBehaviour
             }
         }
         */
-        GameObject.Find("Up").GetComponent<LoadObjUp>().GetUpObj();
-
+        GameObject.Find("GameObject").GetComponent<Obj>().GetObj();
+        //GameObject.Find("Low").GetComponent<LoadObjLow>().GetLowObj();
+        //GameObject.Find("Abut").GetComponent<LoadObjAbut>().GetAbutObj();
     }
 
 
