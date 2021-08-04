@@ -147,10 +147,8 @@ public class FileDialog : MonoBehaviour
             }
         }
         */
-        GameObject Upperjaw;
-        Upperjaw = Resources.Load("1") as GameObject;
-        //Instantiate(Upperjaw, Upperjaw.position, Quaternion.identity);
-        Instantiate(Upperjaw, new Vector3(0.05f, -0.2f, 80f), Quaternion.identity);
+        GameObject.Find("Up").GetComponent<LoadObjUp>().GetUpObj();
+
     }
 
 
