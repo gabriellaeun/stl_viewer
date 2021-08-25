@@ -8,6 +8,8 @@ public class Margin : MonoBehaviour
 {
     FileDialog filedialog;
     public string name, Dir;
+    int nodeNum;
+    float x, y, z;
 
     public void MarginExtract()
     {
@@ -33,7 +35,27 @@ public class Margin : MonoBehaviour
         xmldoc.LoadXml(str);
 
 
+        XmlNodeList VectorNodes = xmldoc.SelectNodes("ConstuctionInfo/Teeth/Tooth/Margin/Vec3");
+        nodeNum = VectorNodes.Count;
+        //Debug.Log("노드 개수 : " + VectorNodes.Count);
+        LineRenderer lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.startWidth = 0.05f;
+        lineRenderer.endWidth = 0.05f;
         XmlNodeList nodes = xmldoc.SelectNodes("ConstuctionInfo/Teeth/Tooth/Margin");
+
+
+        for (int i=0; i<nodeNum; i++)
+        {
+            XmlNodeList number = VectorNodes[i].ChildNodes;
+
+            x = float.Parse(number[0].InnerText);
+            y = float.Parse(number[1].InnerText);
+            z = float.Parse(number[2].InnerText);
+
+            Debug.Log("x : " + x + ", y : " + y + ", z : " + z);
+
+            lineRenderer.SetPosition(i, new Vector3(x, y, z));
+        }
 
     }
 }
