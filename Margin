@@ -37,7 +37,7 @@ public class Margin : MonoBehaviour
 
         XmlNodeList VectorNodes = xmldoc.SelectNodes("ConstuctionInfo/Teeth/Tooth/Margin/Vec3");
         nodeNum = VectorNodes.Count;
-        //Debug.Log("노드 개수 : " + VectorNodes.Count);
+        Debug.Log("노드 개수 : " + VectorNodes.Count);
         LineRenderer lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.startWidth = 0.05f;
         lineRenderer.endWidth = 0.05f;
@@ -53,7 +53,6 @@ public class Margin : MonoBehaviour
             z = float.Parse(number[2].InnerText);
 
             Debug.Log("x : " + x + ", y : " + y + ", z : " + z);
-
             lineRenderer.SetPosition(i, new Vector3(x, y, z));
         }
 
