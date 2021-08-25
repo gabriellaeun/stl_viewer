@@ -1,0 +1,39 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.Xml;
+using System;
+
+public class Margin : MonoBehaviour
+{
+    FileDialog filedialog;
+    public string name, Dir;
+
+    public void MarginExtract()
+    {
+        //xml 파일 위치를 알아야 함
+        //FileDialog.cs의 FilePath, target_path, DirName 변수 가져와야 함
+        filedialog = GameObject.Find("folder").GetComponent<FileDialog>();
+
+        name = filedialog.NAME;
+        Dir = filedialog.DirName;
+
+
+        //Debug.Log("name : " + name);
+        //Debug.Log("Dir : " + Dir);
+
+
+        //Vector 값을 파싱해서 바로 LineRenderer의 element로 넣어주도록 코드 설계
+        TextAsset textAsset = (TextAsset)Resources.Load(Dir + "/" + name);
+        Debug.Log(textAsset);
+
+        string str = textAsset.text;
+
+        XmlDocument xmldoc = new XmlDocument();
+        xmldoc.LoadXml(str);
+
+
+        XmlNodeList nodes = xmldoc.SelectNodes("ConstuctionInfo/Teeth/Tooth/Margin");
+
+    }
+}
