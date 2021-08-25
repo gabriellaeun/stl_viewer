@@ -12,7 +12,9 @@ public class FileDialog : MonoBehaviour
 {
     public Text m_text;
     public string DirName;
-    string type, libname, libfile, imptype, FilePath, number;
+    public string NAME;
+    string type, libname, libfile, imptype, number;
+    string FilePath, target_path;
     string upper, lower;
     string c_lower = null;
     string c_upper = null;
@@ -70,7 +72,7 @@ public class FileDialog : MonoBehaviour
 
         FilePath = path + "/" + DirName + ".xml";
         Debug.Log("xml 파일 경로 : " + FilePath);
-        string NAME = Path.GetFileNameWithoutExtension(FilePath);
+        NAME = Path.GetFileNameWithoutExtension(FilePath);
         TextAsset textAsset = (TextAsset)Resources.Load(DirName + "/" + NAME);
         Debug.Log(textAsset);
 
@@ -150,6 +152,9 @@ public class FileDialog : MonoBehaviour
         GameObject.Find("GameObject").GetComponent<Obj>().GetObj();
         //GameObject.Find("Low").GetComponent<LoadObjLow>().GetLowObj();
         //GameObject.Find("Abut").GetComponent<LoadObjAbut>().GetAbutObj();
+
+        GameObject.Find("MarginLine").GetComponent<Margin>().MarginExtract();
+
     }
 
 
@@ -266,7 +271,7 @@ public class FileDialog : MonoBehaviour
         string proj_path = UnityEngine.Application.dataPath; //1. 프로젝트 Assets 경로
         Debug.Log(proj_path);
 
-        string target_path = proj_path + "/Resources/" + DirName;
+        target_path = proj_path + "/Resources/" + DirName;
 
         Directory.CreateDirectory(target_path);
 
