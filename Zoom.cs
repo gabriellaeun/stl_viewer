@@ -14,7 +14,7 @@ public class Zoom : MonoBehaviour
     {
         float t_zoomDirection = Input.GetAxis("Mouse ScrollWheel");//휠 위로 돌리면 1, 아래로 돌리면 -1 리턴
 
-        if (transform.position.z >= m_zoomMin && t_zoomDirection < 0) //최소 범위보다 작으면 축소 그만
+        if (transform.position.z <= m_zoomMin && t_zoomDirection < 0) //최소 범위보다 작으면 축소 그만
             return;
         if (transform.position.z >= m_zoomMax && t_zoomDirection > 0) //최대 범위 넘으면 확대 그만
             return;
