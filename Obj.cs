@@ -9,12 +9,14 @@ public class Obj : MonoBehaviour
     public GameObject targetU;
     public GameObject Abut;
 
+    CameraZoom camerazoom;
+    GameObject margin;
+
     Toggle toggleU;
     Toggle toggleL;
     Toggle toggleA;
-    start initU;
-    start initL;
-    start initA;
+    Toggle toggleM;
+    
 
     public void GetObj()
     {
@@ -22,6 +24,8 @@ public class Obj : MonoBehaviour
         //name.DirName 사용
 
         targetL = Resources.Load<GameObject>(name.DirName + "/2-copy");
+        camerazoom = GameObject.Find("Main Camera").GetComponent<CameraZoom>();
+        margin = GameObject.Find("MarginLine");
 
         if (targetL == null)
         {
@@ -33,6 +37,7 @@ public class Obj : MonoBehaviour
                 Abut = Resources.Load<GameObject>(name.DirName + "/1");
                 if (targetU == null) //상악 이름이 1-COPY인 경우
                 {
+                    /*
                     targetU = Resources.Load<GameObject>(name.DirName + "/1-COPY");
                     GameObject cloneL = Instantiate(targetL, new Vector3(0.05f, -0.2f, 80f), Quaternion.Euler(new Vector3(-90f, -10f, 0f))); //하악
                     targetL.transform.localScale = new Vector3(1f, 1f, 1f);
@@ -40,13 +45,22 @@ public class Obj : MonoBehaviour
                     targetU.transform.localScale = new Vector3(1f, 1f, 1f);
                     GameObject cloneA = Instantiate(Abut, new Vector3(0.05f, -0.2f, 80f), Quaternion.Euler(new Vector3(-90f, -10f, 0f))); //상악 지대치
                     Abut.transform.localScale = new Vector3(1f, 1f, 1f);
+                    */
 
+                    targetU = Resources.Load<GameObject>(name.DirName + "/1-COPY");
+                    GameObject cloneL = Instantiate(targetL); //하악
+                    GameObject cloneU = Instantiate(targetU); //상악
+                    GameObject cloneA = Instantiate(Abut); //상악 지대치
+
+                    /*
                     cloneL.AddComponent<Rotate>();
                     cloneL.AddComponent<Zoom>();
                     cloneU.AddComponent<Rotate>();
                     cloneU.AddComponent<Zoom>();
                     cloneA.AddComponent<Rotate>();
                     cloneA.AddComponent<Zoom>();
+                    */
+                    camerazoom.target = cloneL;
 
                     toggleU = GameObject.Find("UpperTog").GetComponent<Toggle>();
                     toggleU.gameobj = cloneU;
@@ -54,28 +68,34 @@ public class Obj : MonoBehaviour
                     toggleL.gameobj = cloneL;
                     toggleA = GameObject.Find("AbutmentTog").GetComponent<Toggle>();
                     toggleA.gameobj = cloneA;
+
+                    toggleM = GameObject.Find("MarginTog").GetComponent<Toggle>();
+                    toggleM.gameobj = margin;
+
+                    /*
                     initU = GameObject.Find("initialize").GetComponent<start>();
                     initU.upper = cloneU;
                     initL = GameObject.Find("initialize").GetComponent<start>();
                     initL.lower = cloneL;
                     initA = GameObject.Find("initialize").GetComponent<start>();
                     initA.abut = cloneA;
+                    */
                 }
                 else //상악 이름이 1-copy인 경우
                 {
-                    GameObject cloneL = Instantiate(targetL, new Vector3(0.05f, -0.2f, 80f), Quaternion.Euler(new Vector3(-90f, -10f, 0f))); //하악
-                    targetL.transform.localScale = new Vector3(1f, 1f, 1f);
-                    GameObject cloneU = Instantiate(targetU, new Vector3(0.05f, -0.2f, 80f), Quaternion.Euler(new Vector3(-90f, -10f, 0f))); //상악
-                    targetU.transform.localScale = new Vector3(1f, 1f, 1f);
-                    GameObject cloneA = Instantiate(Abut, new Vector3(0.05f, -0.2f, 80f), Quaternion.Euler(new Vector3(-90f, -10f, 0f))); //상악 지대치
-                    Abut.transform.localScale = new Vector3(1f, 1f, 1f);
+                    GameObject cloneL = Instantiate(targetL); //하악
+                    GameObject cloneU = Instantiate(targetU); //상악
+                    GameObject cloneA = Instantiate(Abut); //상악 지대치
 
+                    /*
                     cloneL.AddComponent<Rotate>();
                     cloneL.AddComponent<Zoom>();
                     cloneU.AddComponent<Rotate>();
                     cloneU.AddComponent<Zoom>();
                     cloneA.AddComponent<Rotate>();
                     cloneA.AddComponent<Zoom>();
+                    */
+                    camerazoom.target = cloneL;
 
                     toggleU = GameObject.Find("UpperTog").GetComponent<Toggle>();
                     toggleU.gameobj = cloneU;
@@ -84,12 +104,17 @@ public class Obj : MonoBehaviour
                     toggleA = GameObject.Find("AbutmentTog").GetComponent<Toggle>();
                     toggleA.gameobj = cloneA;
 
+                    toggleM = GameObject.Find("MarginTog").GetComponent<Toggle>();
+                    toggleM.gameobj = margin;
+
+                    /*
                     initU = GameObject.Find("initialize").GetComponent<start>();
                     initU.upper = cloneU;
                     initL = GameObject.Find("initialize").GetComponent<start>();
                     initL.lower = cloneL;
                     initA = GameObject.Find("initialize").GetComponent<start>();
                     initA.abut = cloneA;
+                    */
                 }
             }
             else //하악에 지대치가 있을 경우(하악 이름이 2-COPY(COPY 대문자로 되어있는 경우))
@@ -97,19 +122,20 @@ public class Obj : MonoBehaviour
                 targetL = Resources.Load<GameObject>(name.DirName + "/2-COPY");
                 targetU = Resources.Load<GameObject>(name.DirName + "/1");
                 Abut = Resources.Load<GameObject>(name.DirName + "/2");
-                GameObject cloneL = Instantiate(targetL, new Vector3(0.05f, -0.2f, 80f), Quaternion.Euler(new Vector3(-90f, -10f, 0f))); //하악
-                targetL.transform.localScale = new Vector3(1f, 1f, 1f);
-                GameObject cloneU = Instantiate(targetU, new Vector3(0.05f, -0.2f, 80f), Quaternion.Euler(new Vector3(-90f, -10f, 0f))); //상악
-                targetU.transform.localScale = new Vector3(1f, 1f, 1f);
-                GameObject cloneA = Instantiate(Abut, new Vector3(0.05f, -0.2f, 80f), Quaternion.Euler(new Vector3(-90f, -10f, 0f))); //하악 지대치
-                Abut.transform.localScale = new Vector3(1f, 1f, 1f);
+                GameObject cloneL = Instantiate(targetL); //하악
+                GameObject cloneU = Instantiate(targetU); //상악
+                GameObject cloneA = Instantiate(Abut); //상악 지대치
 
+                /*
                 cloneL.AddComponent<Rotate>();
                 cloneL.AddComponent<Zoom>();
                 cloneU.AddComponent<Rotate>();
                 cloneU.AddComponent<Zoom>();
                 cloneA.AddComponent<Rotate>();
                 cloneA.AddComponent<Zoom>();
+                */
+
+                camerazoom.target = cloneL;
 
                 toggleU = GameObject.Find("UpperTog").GetComponent<Toggle>();
                 toggleU.gameobj = cloneU;
@@ -118,12 +144,17 @@ public class Obj : MonoBehaviour
                 toggleA = GameObject.Find("AbutmentTog").GetComponent<Toggle>();
                 toggleA.gameobj = cloneA;
 
+                toggleM = GameObject.Find("MarginTog").GetComponent<Toggle>();
+                toggleM.gameobj = margin;
+
+                /*
                 initU = GameObject.Find("initialize").GetComponent<start>();
                 initU.upper = cloneU;
                 initL = GameObject.Find("initialize").GetComponent<start>();
                 initL.lower = cloneL;
                 initA = GameObject.Find("initialize").GetComponent<start>();
                 initA.abut = cloneA;
+                */
             }
         }
         else //하악에 지대치가 있을 경우(하악 이름이 2-copy)
@@ -131,19 +162,19 @@ public class Obj : MonoBehaviour
             targetL = Resources.Load<GameObject>(name.DirName + "/2-copy");
             targetU = Resources.Load<GameObject>(name.DirName + "/1");
             Abut = Resources.Load<GameObject>(name.DirName + "/2");
-            GameObject cloneL = Instantiate(targetL, new Vector3(0.05f, -0.2f, 80f), Quaternion.Euler(new Vector3(-90f, -10f, 0f))); //하악
-            targetL.transform.localScale = new Vector3(1f, 1f, 1f);
-            GameObject cloneU = Instantiate(targetU, new Vector3(0.05f, -0.2f, 80f), Quaternion.Euler(new Vector3(-90f, -10f, 0f))); //상악
-            targetU.transform.localScale = new Vector3(1f, 1f, 1f);
-            GameObject cloneA = Instantiate(Abut, new Vector3(0.05f, -0.2f, 80f), Quaternion.Euler(new Vector3(-90f, -10f, 0f))); //하악 지대치
-            Abut.transform.localScale = new Vector3(1f, 1f, 1f);
+            GameObject cloneL = Instantiate(targetL); //하악
+            GameObject cloneU = Instantiate(targetU); //상악
+            GameObject cloneA = Instantiate(Abut); //상악 지대치
 
+            /*
             cloneL.AddComponent<Rotate>();
             cloneL.AddComponent<Zoom>();
             cloneU.AddComponent<Rotate>();
             cloneU.AddComponent<Zoom>();
             cloneA.AddComponent<Rotate>();
             cloneA.AddComponent<Zoom>();
+            */
+            camerazoom.target = cloneL;
 
             toggleU = GameObject.Find("UpperTog").GetComponent<Toggle>();
             toggleU.gameobj = cloneU;
@@ -152,12 +183,17 @@ public class Obj : MonoBehaviour
             toggleA = GameObject.Find("AbutmentTog").GetComponent<Toggle>();
             toggleA.gameobj = cloneA;
 
+            toggleM = GameObject.Find("MarginTog").GetComponent<Toggle>();
+            toggleM.gameobj = margin;
+
+            /*
             initU = GameObject.Find("initialize").GetComponent<start>();
             initU.upper = cloneU;
             initL = GameObject.Find("initialize").GetComponent<start>();
             initL.lower = cloneL;
             initA = GameObject.Find("initialize").GetComponent<start>();
             initA.abut = cloneA;
+            */
         }
 
     }
