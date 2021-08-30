@@ -10,6 +10,10 @@ public class Margin : MonoBehaviour
     public string name, Dir;
     int nodeNum;
     float x, y, z;
+    float m_zoomMax = 100f;
+    float m_zoomMin = -100f;
+    float scale, scale_x, scale_y, scale_z;
+
 
     public void MarginExtract()
     {
