@@ -45,6 +45,7 @@ public class Margin : MonoBehaviour
         LineRenderer lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.startWidth = 0.05f;
         lineRenderer.endWidth = 0.05f;
+        lineRenderer.positionCount = nodeNum; //positionCount가 lineRenderer positions의 size를 결정해줌!
         XmlNodeList nodes = xmldoc.SelectNodes("ConstuctionInfo/Teeth/Tooth/Margin");
 
 
