@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Obj : MonoBehaviour
 {
-    //public Transform spPos;
+    
     public GameObject targetL;
     public GameObject targetU;
     public GameObject Abut;
+    public GameObject Crown;
 
     CameraZoom camerazoom;
     GameObject margin;
@@ -16,7 +17,7 @@ public class Obj : MonoBehaviour
     Toggle toggleL;
     Toggle toggleA;
     Toggle toggleM;
-    
+    Toggle toggleC;
 
     public void GetObj()
     {
@@ -26,6 +27,13 @@ public class Obj : MonoBehaviour
         targetL = Resources.Load<GameObject>(name.DirName + "/2-copy");
         camerazoom = GameObject.Find("Main Camera").GetComponent<CameraZoom>();
         margin = GameObject.Find("MarginLine");
+
+        Debug.Log(name.crownName);
+        Crown = Resources.Load<GameObject>(name.DirName + "/" + name.crownName);
+
+        GameObject cloneC = Instantiate(Crown);//크라운
+        toggleC = GameObject.Find("CrownTog").GetComponent<Toggle>();
+        toggleC.gameobj = cloneC;
 
         if (targetL == null)
         {
