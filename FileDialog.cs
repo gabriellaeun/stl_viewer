@@ -21,6 +21,7 @@ public class FileDialog : MonoBehaviour
     string XmlFile = null;
     string ConFile = null;
     string crown = null;
+    public string crownName = null; //확장자 뺀 크라운 이름
 
     void Load(string path, string DirName)
     {
@@ -249,6 +250,7 @@ public class FileDialog : MonoBehaviour
             else if (Path.GetExtension(fname) == ".stl")
             {
                 crown = fname;
+                Debug.Log("크라운 이름 : " + crown);
             }
             else if (Path.GetExtension(fname) == ".xml")
             {
@@ -320,6 +322,8 @@ public class FileDialog : MonoBehaviour
             }
 
         }
+        crownName = Path.GetFileNameWithoutExtension(crown);
+
         Debug.Log("target : " + target_path);
         Load(target_path, DirName);
 
