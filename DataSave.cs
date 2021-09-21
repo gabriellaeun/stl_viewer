@@ -6,8 +6,14 @@ using System.Xml;
 
 public class DataSave : MonoBehaviour
 {
+    TimeManager timeManager;
+    public string DentProjName;
+    public string name;
+
     void MakeXml()
     {
+        timeManager = GameObject.Find("Date").GetComponent<TimeManager>();
+
         XmlDocument doc = new XmlDocument();
         XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
         doc.AppendChild(xmlDeclaration);
@@ -15,7 +21,7 @@ public class DataSave : MonoBehaviour
         //Treatment
         XmlElement Root = doc.CreateElement("Treatment");
         doc.AppendChild(Root);
-        Root.AppendChild(doc.CreateElement("DateTime")).InnerText = "1";
+        Root.AppendChild(doc.CreateElement("DateTime")).InnerText = timeManager.CurrentTime;
         Root.AppendChild(doc.CreateElement("TrayNo")).InnerText = "1";
         Root.AppendChild(doc.CreateElement("Notes")).InnerText = "1";
         Root.AppendChild(doc.CreateElement("ProjectGUID")).InnerText = "1";
@@ -72,8 +78,13 @@ public class DataSave : MonoBehaviour
         Root.AppendChild(doc.CreateElement("AntagonistType")).InnerText = "RegisteredJaws";
 
 
-        doc.Save("Assets/Resources/Data/default.dentalProject");
 
+        //doc.Save("Assets/Resources/Data/default.dentalProject");
+        DentProjName = timeManager.xmlName + ".xml";
+        string filepath = "Assets/Resources/Data/" + DentProjName;
+        name = timeManager.xmlName;
+
+        doc.Save(filepath);
     }
     void Start()
     {
