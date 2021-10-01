@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.IO;
 using System.Xml;
 
@@ -9,8 +10,11 @@ public class DataSave : MonoBehaviour
     TimeManager timeManager;
     public string DentProjName;
     public string name;
+    public InputField inputField;
+    public InputField inputFieldPat;
+    public InputField inputFieldPos;
 
-    void MakeXml()
+    public void MakeXml()
     {
         timeManager = GameObject.Find("Date").GetComponent<TimeManager>();
 
@@ -72,12 +76,27 @@ public class DataSave : MonoBehaviour
         Pat.AppendChild(doc.CreateElement("PatientId")).InnerText = "1";
         Pat.AppendChild(doc.CreateElement("PatientFirstName")).InnerText = "이름";
 
-        Root.AppendChild(doc.CreateElement("DentalDBBuildDate")).InnerText = "날짜";
-        Root.AppendChild(doc.CreateElement("DentalDBProductName")).InnerText = "DentalDB";
+        Root.AppendChild(doc.CreateElement("DentalDBBuildDate")).InnerText = timeManager.buildDate;
+        Root.AppendChild(doc.CreateElement("DentalDBProductName")).InnerText = timeManager.xmlName;
         Root.AppendChild(doc.CreateElement("ToothColor")).InnerText = "A1";
         Root.AppendChild(doc.CreateElement("AntagonistType")).InnerText = "RegisteredJaws";
 
+        XmlNodeList nodes = doc.SelectNodes("Treatment");
+        XmlNode Position = nodes[0];
 
+        Position.SelectSingleNode("Notes").InnerText = inputField.text;
+        //Debug.Log(inputField.text);
+
+
+        XmlNodeList nodes1 = doc.SelectNodes("Treatment/Patient");
+        XmlNode Position1 = nodes1[0];
+
+        Position1.SelectSingleNode("PatientFirstName").InnerText = inputFieldPat.text;
+
+        XmlNodeList nodes2 = doc.SelectNodes("Treatment/Practice");
+        XmlNode Position2 = nodes2[0];
+
+        Position2.SelectSingleNode("PracticeName").InnerText = inputFieldPos.text;
 
         //doc.Save("Assets/Resources/Data/default.dentalProject");
         DentProjName = timeManager.xmlName + ".xml";
@@ -86,11 +105,8 @@ public class DataSave : MonoBehaviour
 
         doc.Save(filepath);
     }
-    void Start()
-    {
-        MakeXml();
-    }
 
+    
 }
 
     
