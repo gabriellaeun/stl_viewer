@@ -99,8 +99,18 @@ public class DataSave : MonoBehaviour
         Position2.SelectSingleNode("PracticeName").InnerText = inputFieldPos.text;
 
         //doc.Save("Assets/Resources/Data/default.dentalProject");
-        DentProjName = timeManager.xmlName + ".xml";
-        string filepath = "Assets/Resources/Data/" + DentProjName;
+        DentProjName = timeManager.xmlName + ".dentalProject";
+
+        string proj_path = UnityEngine.Application.dataPath;
+        string target_path = proj_path + "/Resources/Data/";
+
+
+        if (!Directory.Exists(target_path))
+        {
+            Directory.CreateDirectory(target_path);
+        }
+
+        string filepath = target_path + DentProjName;
         name = timeManager.xmlName;
 
         doc.Save(filepath);
