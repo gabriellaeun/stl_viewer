@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using System.Xml;
+using System;
 
 public class DataSave : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class DataSave : MonoBehaviour
     public InputField inputField;
     public InputField inputFieldPat;
     public InputField inputFieldPos;
+    public InputField inputFieldPerson;
 
     public void MakeXml()
     {
@@ -83,7 +85,7 @@ public class DataSave : MonoBehaviour
 
         XmlNodeList nodes = doc.SelectNodes("Treatment");
         XmlNode Position = nodes[0];
-
+                
         Position.SelectSingleNode("Notes").InnerText = inputField.text;
         //Debug.Log(inputField.text);
 
@@ -97,26 +99,40 @@ public class DataSave : MonoBehaviour
         XmlNode Position2 = nodes2[0];
 
         Position2.SelectSingleNode("PracticeName").InnerText = inputFieldPos.text;
+        
 
         //doc.Save("Assets/Resources/Data/default.dentalProject");
         DentProjName = timeManager.xmlName + ".dentalProject";
-
+        string dirName = timeManager.foldername;
         string proj_path = UnityEngine.Application.dataPath;
-        string target_path = proj_path + "/Resources/Data/";
+        string target_path = proj_path + "/Resources/" + dirName + "_" + inputFieldPos.text + "_" + inputFieldPat.text + "_" + inputFieldPerson.text + "/";
 
+        System.Random rd = new System.Random();
+
+        int rand_num = rd.Next(1, 100);
 
         if (!Directory.Exists(target_path))
         {
             Directory.CreateDirectory(target_path);
+
+            string filepath = target_path + DentProjName;
+            name = timeManager.xmlName;
+
+            doc.Save(filepath);
+        }
+        else if (Directory.Exists(target_path))
+        {
+            string new_dir = target_path + "_" + rand_num;
+            Directory.CreateDirectory(new_dir);
+
+            string filepath = new_dir + DentProjName;
+            name = timeManager.xmlName;
+
+            doc.Save(filepath);
         }
 
-        string filepath = target_path + DentProjName;
-        name = timeManager.xmlName;
-
-        doc.Save(filepath);
     }
 
-    
+
 }
 
-    
