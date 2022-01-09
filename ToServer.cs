@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using LitJson;
 using System;
+using UnityEngine.UI;
 
 public class ToServer : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class ToServer : MonoBehaviour
     float x, y, z;
     float firstX, firstY, firstZ;
     int nodeNum;
+    string marginPath;
 
     public void MarginExtract()
     {
@@ -137,18 +139,33 @@ public class ToServer : MonoBehaviour
             }
                         
             Debug.Log("마진 추출 완료!");
-            
+            /*
             string path = DataSave.target_path;
 
-            string marginPath = path + "/" + DataSave.dirName + "-" + margin + ".xyz";
+            marginPath = path + "/" + DataSave.dirName + "-" + margin + ".xyz";
 
-            File.WriteAllText(@marginPath, txt, Encoding.Default);
+            //File.WriteAllText(@marginPath, txt, Encoding.Default);
 
+            File.Create(@marginPath);
+            */
             Margin();
         }
         
         void Margin()
         {
+            string path = DataSave.target_path;
+            marginPath = path + "/" + DataSave.dirName + "-" + margin + ".xyz";
+
+            //File.WriteAllText(@marginPath, txt, Encoding.Default);
+
+            //File.Create(@marginPath);
+
+            //StringWriter writer = new StringWriter();
+            txt = null;
+            txt = marginPoint.Replace("\n", Environment.NewLine);
+            File.WriteAllText(@marginPath, txt, Encoding.Default);
+            
+
             StringReader reader = new StringReader(marginPoint);
 
             
@@ -174,7 +191,7 @@ public class ToServer : MonoBehaviour
                 {
                     nodeNum = Convert.ToInt32(line);
                     lineRenderer.positionCount = nodeNum + 1; //positionCount가 lineRenderer positions의 size를 결정해줌!
-
+                    
                     Debug.Log(nodeNum);
                     count++;
                 }
@@ -182,15 +199,19 @@ public class ToServer : MonoBehaviour
                 {
                     first = line.Split(new char[] { ' ' });
                     for(int i=0; i < first.Length; i++)
-                    { 
+                    {
+                        
                         Debug.Log(first[i]);
                     }
+
+                   
 
                     firstX = float.Parse(first[0]);
                     firstY = float.Parse(first[1]);
                     firstZ = float.Parse(first[2]);
 
                     lineRenderer.SetPosition(0, new Vector3(firstX, firstY, firstZ));
+
                     count++;
                 }
                 else
@@ -200,16 +221,18 @@ public class ToServer : MonoBehaviour
                     for(int i = 0; i < extra.Length; i++)
                     {
                         //Debug.Log(extra[i]);
+                       
                     }
-
+                    
                     x = float.Parse(extra[0]);
                     y = float.Parse(extra[1]);
                     z = float.Parse(extra[2]);
 
                     lineRenderer.SetPosition(count-1, new Vector3(x, y, z));
-
+                    
                     count++;
                 }
+                                
 
             }
 
